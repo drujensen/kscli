@@ -5,6 +5,7 @@ mod config;
 mod init;
 mod pull;
 mod push;
+mod utils;
 
 #[derive(Debug, StructOpt)]
 pub enum Command {
