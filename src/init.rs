@@ -41,6 +41,7 @@ impl Init {
         };
 
         let file = std::fs::OpenOptions::new()
+            .truncate(true)
             .write(true)
             .create(true)
             .open(config_path)
