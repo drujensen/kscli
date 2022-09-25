@@ -1,8 +1,6 @@
-use reqwest::blocking::Client;
 use serde_json::Value;
 use std::fs::File;
 use std::fs::OpenOptions;
-use std::io::Write;
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -17,7 +15,6 @@ impl Pull {
         let config: config::Config = serde_yaml::from_reader(file).expect("Could not read values.");
 
         for topic in config.topics {
-            let client = Client::new();
             let topic_name = format!("{}.{}.{}", topic.purpose, config.service, topic.resource);
             let subject = format!("{}/subjects/{}-value/versions/latest", url, topic_name);
             let response = reqwest::blocking::get(subject).expect("Could not get response.");
