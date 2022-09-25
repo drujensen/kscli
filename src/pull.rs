@@ -24,7 +24,7 @@ impl Pull {
             let body = response.text().expect("Could not read response.");
             let parsed: Value = utils::read_json(&body);
             let schema = parsed["schema"].as_str().unwrap();
-            println!("{:?}", schema);
+            let parsed: Value = utils::read_json(&schema);
 
             let schema_asvc = format!(
                 "{}/{}-{}.avsc",
@@ -36,7 +36,7 @@ impl Pull {
                 .create(true)
                 .open(schema_asvc)
                 .expect("Couldn't open file");
-            write!(file, "{}", schema).unwrap();
+            serde_json::to_writer_pretty(&mut file, &parsed).expect("Couldn't write to file");
         }
         Ok("Success".to_string())
     }
