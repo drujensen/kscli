@@ -43,6 +43,7 @@ impl Init {
             .open(path)
             .expect("Couldn't open file");
         let schema = r#"{
+    "namespace": "com.example.blog",
     "type": "record",
     "name": "PostRequest",
     "fields": [

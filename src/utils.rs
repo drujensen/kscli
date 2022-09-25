@@ -1,3 +1,5 @@
+use serde_json::Value;
+
 pub fn escape(src: &str) -> String {
     use std::fmt::Write;
     let mut escaped = String::with_capacity(src.len());
@@ -21,4 +23,9 @@ pub fn escape(src: &str) -> String {
         }
     }
     escaped
+}
+
+pub fn read_json(raw_json: &str) -> Value {
+    let parsed: Value = serde_json::from_str(raw_json).unwrap();
+    return parsed;
 }

@@ -15,7 +15,6 @@ impl Push {
         let file = File::open(config_path).expect("Could not open file.");
         let config: config::Config = serde_yaml::from_reader(file).expect("Could not read values.");
 
-        //loop through the topics and create the schemas
         for topic in config.topics {
             let schema_asvc = format!(
                 "{}/{}-{}.avsc",
