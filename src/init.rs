@@ -24,23 +24,20 @@ impl Init {
             topics: vec![request_topic],
         };
 
+        if let Some(parent) = config_path.parent() {
+            std::fs::create_dir_all(parent).expect("Couldn't create directory");
+        };
+
         let file = OpenOptions::new()
             .truncate(true)
             .write(true)
             .create(true)
-            .open(config_path)
+            .open(config_path.clone())
             .expect("Couldn't open file");
 
         serde_yaml::to_writer(file, &config).unwrap();
 
         // Create sample schema
-        let path = "./schemas/post-request.avsc";
-
-        let mut file = OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(path)
-            .expect("Couldn't open file");
         let schema = r#"{
     "namespace": "com.example.blog",
     "type": "record",
@@ -51,7 +48,21 @@ impl Init {
         {"name": "body", "type": "string"}
     ]
 }"#;
+
+        let path: PathBuf = [&config.schema_path, "post-request.avsc"].iter().collect();
+
+        if let Some(parent) = path.parent() {
+            std::fs::create_dir_all(parent).expect("Couldn't create directory");
+        };
+
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(path)
+            .expect("Couldn't open file");
+
         write!(file, "{}", schema).unwrap();
+
         Ok("Success".to_string())
     }
 }
