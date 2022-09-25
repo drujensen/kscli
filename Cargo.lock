@@ -356,8 +356,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "ks-cli"
-version = "0.1.0"
+name = "kscli"
+version = "1.0.1"
 dependencies = [
  "reqwest",
  "serde",
