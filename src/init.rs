@@ -1,3 +1,6 @@
+use std::fs::File;
+use std::fs::OpenOptions;
+use std::io::Write;
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -16,31 +19,13 @@ impl Init {
             },
         };
 
-        let reply_topic = config::Topic {
-            resource: "post".to_string(),
-            purpose: config::TopicType::reply,
-            properties: config::Properties {
-                retry: true,
-                dlt: true,
-            },
-        };
-
-        let event_topic = config::Topic {
-            resource: "post".to_string(),
-            purpose: config::TopicType::event,
-            properties: config::Properties {
-                retry: true,
-                dlt: true,
-            },
-        };
-
         let config = config::Config {
             service: "blog".to_string(),
             schema_path: "./schemas".to_string(),
-            topics: vec![request_topic, reply_topic, event_topic],
+            topics: vec![request_topic],
         };
 
-        let file = std::fs::OpenOptions::new()
+        let file = OpenOptions::new()
             .truncate(true)
             .write(true)
             .create(true)
@@ -49,6 +34,24 @@ impl Init {
 
         serde_yaml::to_writer(file, &config).unwrap();
 
+        // Create sample schema
+        let path = "./schemas/post-request.avsc";
+
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(path)
+            .expect("Couldn't open file");
+        let schema = r#"{
+    "type": "record",
+    "name": "PostRequest",
+    "fields": [
+        {"name": "id", "type": "string"},
+        {"name": "title", "type": "string"},
+        {"name": "body", "type": "string"}
+    ]
+}"#;
+        write!(file, "{}", schema).unwrap();
         Ok("Success".to_string())
     }
 }

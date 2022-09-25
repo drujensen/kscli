@@ -67,20 +67,11 @@ A sample avsc file:
 {
   "type": "record",
   "name": "PostRequest",
-  "namespace": "blog",
+  "namespace": "com.example.blog",
   "fields": [
-    {
-      "name": "id",
-      "type": "string"
-    },
-    {
-      "name": "title",
-      "type": "string"
-    },
-    {
-      "name": "body",
-      "type": "string"
-    }
+      {"name": "id", "type": "string"},
+      {"name": "title", "type": "string"},
+      {"name": "body", "type": "string"},
   ]
 }
 ```
