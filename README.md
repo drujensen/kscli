@@ -4,7 +4,9 @@ An opinionated client for the [Confluent Schema Registry](https://docs.confluent
 
 This cli uses a simple configuration file to manage schemas in the registry.
 
-The topic name and avsc filename follows a strict naming convention:
+The topic name follows a strict naming convention:
+
+`{purpose}.{service}.{resource}`
 
 - purpose: One of the following - [request, reply, event, store, log]
 - service: The name of the service or domain that owns this topic
