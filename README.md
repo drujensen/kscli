@@ -99,7 +99,7 @@ If you need to pull the schemas from the Schema Registry, you can do so with the
 kscli pull
 ```
 
-## Enviroment Variables
+## Environment Variables
 
 There are cases where you want to override some of the configuration settings.  You can do this using environment variables.
 
