@@ -8,7 +8,7 @@ use super::config;
 #[derive(Debug, StructOpt)]
 pub struct Init {}
 impl Init {
-    pub fn run(&self, config_path: PathBuf, _url: String) -> Result<String, String> {
+    pub fn run(&self, config_path: PathBuf) -> Result<String, String> {
         let request_topic = config::Topic {
             resource: "post".to_string(),
             purpose: config::TopicType::request,
@@ -49,7 +49,9 @@ impl Init {
     ]
 }"#;
 
-        let path: PathBuf = [&config.schema_path, "post-request.avsc"].iter().collect();
+        let path: PathBuf = [&config.schema_path, "request", "post-0001.avsc"]
+            .iter()
+            .collect();
 
         if let Some(parent) = path.parent() {
             std::fs::create_dir_all(parent).expect("Couldn't create directory");

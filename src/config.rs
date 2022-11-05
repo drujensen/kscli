@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use serde_yaml::{self};
 use std::fmt::{self, Debug, Display};
 
 #[derive(Debug, Serialize, Deserialize)]

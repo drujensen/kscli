@@ -46,7 +46,7 @@ fn main() {
     let opt = Opt::from_args();
 
     let result = match opt.command {
-        Command::Init(init) => init.run(opt.config, opt.url),
+        Command::Init(init) => init.run(opt.config),
         Command::Push(push) => push.run(opt.config, opt.url),
         Command::Pull(pull) => pull.run(opt.config, opt.url),
     };
