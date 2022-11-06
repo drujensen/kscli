@@ -24,7 +24,7 @@ impl Pull {
             let parsed: Value = utils::read_json(&schema);
 
             let purpose = format!("{}", topic.purpose);
-            let resource = format!("{}-0001.avsc", topic.resource);
+            let resource = format!("{}.avsc", topic.resource);
 
             let path: PathBuf = [&config.schema_path, &purpose, &resource].iter().collect();
 

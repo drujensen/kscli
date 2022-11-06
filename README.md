@@ -48,21 +48,23 @@ Here is what the config file looks like:
 service: blog
 schema_path: "./schemas"
 topics:
-  - resource: post
-    purpose: request
+  - purpose: request
+    resource: post
     properties:
+      compatibility: BACKWARD
       retry: true
       dlt: true
-  - resource: post
-    purpose: reply
+  - purpose: reply
+    resource: post
     properties:
+      compatibility: FORWARD
       retry: true
       dlt: true
 ```
 
 Sample avsc files will be created in the `schema_path` directory. The avsc files will be named using the naming convention.
 
-The file naming convention is: `{schema_path}/{purpose}-{resource}.avsc`
+The file naming convention is: `{schema_path}/{purpose}/{resource}.avsc`
 
 A sample avsc file:
 ```json

@@ -13,7 +13,8 @@ impl Init {
             resource: "post".to_string(),
             purpose: config::TopicType::request,
             properties: config::Properties {
-                retry: true,
+                compatibility: config::Compatibility::FULL,
+                retry: 1,
                 dlt: true,
             },
         };
@@ -49,7 +50,7 @@ impl Init {
     ]
 }"#;
 
-        let path: PathBuf = [&config.schema_path, "request", "post-0001.avsc"]
+        let path: PathBuf = [&config.schema_path, "request", "post.avsc"]
             .iter()
             .collect();
 

@@ -18,7 +18,7 @@ impl Push {
 
         for topic in config.topics {
             let purpose = format!("{}", topic.purpose);
-            let resource = format!("{}-0001.avsc", topic.resource);
+            let resource = format!("{}.avsc", topic.resource);
             let path: PathBuf = [&config.schema_path, &purpose, &resource].iter().collect();
 
             let mut asvc = File::open(path).expect("Could not open asvc file.");
@@ -28,6 +28,19 @@ impl Push {
             let body = format!("{{\"schema\": \"{}\"}}", utils::escape(&buffer));
 
             let topic_name = format!("{}.{}.{}", topic.purpose, config.service, topic.resource);
+            let compatibility = format!(
+                "{{\"compatibility\": \"{}\"}}",
+                topic.properties.compatibility
+            );
+
+            let subject = format!("{}/config/{}-value", url, topic_name);
+            let response = client
+                .put(subject)
+                .header(CONTENT_TYPE, "application/vnd.schemaregistry.v1+json")
+                .body(compatibility.clone())
+                .send()
+                .expect("Could not send request.");
+            println!("{:?}", response.text());
 
             let subject = format!("{}/subjects/{}-value/versions", url, topic_name);
             let response = client
@@ -38,8 +51,20 @@ impl Push {
                 .expect("Could not send request.");
             println!("{:?}", response.text());
 
-            if topic.properties.retry {
-                let subject = format!("{}/subjects/{}-retry-value/versions", url, topic_name);
+            for retry in 0..topic.properties.retry {
+                let subject = format!("{}/config/{}-retry-{}-value", url, topic_name, retry);
+                let response = client
+                    .put(subject)
+                    .header(CONTENT_TYPE, "application/vnd.schemaregistry.v1+json")
+                    .body(compatibility.clone())
+                    .send()
+                    .expect("Could not send request.");
+                println!("{:?}", response.text());
+
+                let subject = format!(
+                    "{}/subjects/{}-retry-{}-value/versions",
+                    url, topic_name, retry
+                );
                 let response = client
                     .post(subject)
                     .header(CONTENT_TYPE, "application/vnd.schemaregistry.v1+json")
